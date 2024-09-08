@@ -2,8 +2,10 @@ name: Update Cached Script
 
 on:
   schedule:
-    # Runs the workflow every 4 days
     - cron: '0 0 */4 * *'
+  push:        # This will allow the workflow to trigger when you push to the repo
+    branches:
+      - main
 
 jobs:
   update-script:
