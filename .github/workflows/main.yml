@@ -1,0 +1,30 @@
+name: Update Cached Script
+
+on:
+  schedule:
+    # Runs the workflow every 4 days
+    - cron: '0 0 */4 * *'
+
+jobs:
+  update-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Fetch the updated script
+      run: |
+        curl -o main.js https://js.shrinetheme.com/js/v2/main.js
+    
+    - name: Modify the script (replace 'shrinetheme' with 'google')
+      run: |
+        sed -i 's/shrinetheme/google/g' main.js
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "you@example.com"
+        git config --local user.name "GitHub Action"
+        git add main.js
+        git commit -m "Updated script with replacements"
+        git push
