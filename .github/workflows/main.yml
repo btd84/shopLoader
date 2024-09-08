@@ -3,7 +3,7 @@ name: Update Cached Script
 on:
   schedule:
     - cron: '0 0 */4 * *'
-  push:        # This will allow the workflow to trigger when you push to the repo
+  push:  # Temporarily add this to test manually
     branches:
       - main
 
@@ -18,15 +18,17 @@ jobs:
     - name: Fetch the updated script
       run: |
         curl -o main.js https://js.shrinetheme.com/js/v2/main.js
-    
+
     - name: Modify the script (replace 'shrinetheme' with 'google')
       run: |
         sed -i 's/shrinetheme/google/g' main.js
 
     - name: Commit and push changes
+      env:
+        ACTIONS_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
       run: |
-        git config --local user.email "you@example.com"
-        git config --local user.name "GitHub Action"
+        git config --global user.email "you@example.com"
+        git config --global user.name "GitHub Action"
         git add main.js
         git commit -m "Updated script with replacements"
-        git push
+        git push https://x-access-token:${ACTIONS_TOKEN}@github.com/btd84/shopLoader.git
